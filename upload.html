@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Paper - DivanPapers</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/dark-mode.css">
+    <link rel="stylesheet" href="assets/css/upload.css">
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">DivanPapers</div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="search.html">Search</a>
+                <a href="upload.html" class="active auth-required">Upload</a>
+                <a href="profile.html" class="auth-required">Profile</a>
+                <button id="auth-button" class="btn-primary">Login</button>
+                <button id="theme-toggle" class="btn-icon">🌙</button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="upload-container">
+        <div class="upload-header">
+            <h1>Upload Academic Paper</h1>
+            <p>Share your research with the academic community</p>
+        </div>
+
+        <form id="upload-form" class="upload-form">
+            <div class="form-section">
+                <h2>Paper Information</h2>
+                <div class="form-group">
+                    <label for="title">Paper Title *</label>
+                    <input type="text" id="title" name="title" required placeholder="Enter the full title of your paper">
+                </div>
+
+                <div class="form-group">
+                    <label for="authors">Authors *</label>
+                    <input type="text" id="authors" name="authors" required placeholder="Enter authors (separated by commas)">
+                </div>
+
+                <div class="form-group">
+                    <label for="abstract">Abstract *</label>
+                    <textarea id="abstract" name="abstract" required rows="4" placeholder="Provide a brief summary of your paper"></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="publication-date">Publication Date</label>
+                        <input type="date" id="publication-date" name="publication-date">
+                    </div>
+                    <div class="form-group">
+                        <label for="doi">DOI</label>
+                        <input type="text" id="doi" name="doi" placeholder="e.g., 10.1234/example">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>Classification</h2>
+                <div class="form-group">
+                    <label for="categories">Categories *</label>
+                    <select id="categories" name="categories" multiple required>
+                        <option value="computer-science">Computer Science</option>
+                        <option value="mathematics">Mathematics</option>
+                        <option value="physics">Physics</option>
+                        <option value="biology">Biology</option>
+                        <option value="chemistry">Chemistry</option>
+                        <option value="engineering">Engineering</option>
+                        <option value="social-sciences">Social Sciences</option>
+                        <option value="economics">Economics</option>
+                        <option value="medicine">Medicine</option>
+                    </select>
+                    <small>Hold Ctrl/Cmd to select multiple categories</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="keywords">Keywords *</label>
+                    <input type="text" id="keywords" name="keywords" required placeholder="Enter keywords (separated by commas)">
+                </div>
+
+                <div class="form-group">
+                    <label for="language">Language</label>
+                    <select id="language" name="language">
+                        <option value="en">English</option>
+                        <option value="es">Spanish</option>
+                        <option value="fr">French</option>
+                        <option value="de">German</option>
+                        <option value="zh">Chinese</option>
+                        <option value="ja">Japanese</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>File Upload</h2>
+                <div class="form-group">
+                    <label for="paper-file">Paper File (PDF) *</label>
+                    <div class="file-upload-container">
+                        <input type="file" id="paper-file" name="paper-file" accept=".pdf" required>
+                        <div class="file-upload-preview">
+                            <span id="file-name">No file chosen</span>
+                            <div id="upload-progress" class="upload-progress" style="display: none;">
+                                <div class="progress-bar"></div>
+                                <span class="progress-text">0%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <small>Maximum file size: 50MB</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="supplementary-files">Supplementary Files</label>
+                    <input type="file" id="supplementary-files" name="supplementary-files" multiple>
+                    <small>Optional: Add data sets, code, or other related files</small>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>Additional Information</h2>
+                <div class="form-group">
+                    <label for="citation">Suggested Citation</label>
+                    <textarea id="citation" name="citation" rows="2" placeholder="Enter the suggested citation for your paper"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="funding">Funding/Grants</label>
+                    <input type="text" id="funding" name="funding" placeholder="List any funding sources or grant numbers">
+                </div>
+
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="terms" name="terms" required>
+                        I confirm that I have the right to share this paper and that it does not violate any copyright laws
+                    </label>
+                </div>
+            </div>
+
+            <div style="margin-top: 2rem; text-align: right;">
+                <button type="submit" id="upload-button" class="btn-primary" style="padding: 0.75rem 1.5rem; font-size: 1rem;">Upload Paper</button>
+            </div>
+        </form>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 DivanPapers. All rights reserved.</p>
+    </footer>
+
+
+    <script src="firebase.js"></script>
+    <script src="assets/js/upload.js"></script>
+</body>
+</html>

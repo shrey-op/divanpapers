@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - DivanPapers</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/dark-mode.css">
+    <link rel="stylesheet" href="assets/css/profile.css">
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-brand">
+                <a href="index.html">DivanPapers</a>
+            </div>
+            <div class="nav-links">
+                <a href="search.html">Search</a>
+                <a href="upload.html" class="auth-required" data-tooltip="Login required">Upload</a>
+                <a href="profile.html" class="auth-required active" data-tooltip="Login required">Profile</a>
+                <button id="theme-toggle" class="theme-toggle">🌙</button>
+                <button id="auth-button" class="auth-button">Login</button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="profile-container">
+        <div class="profile-header">
+            <div class="profile-avatar">
+                <img id="profile-image" src="assets/images/default-avatar.png" alt="Profile Picture">
+                <button id="change-avatar" class="change-avatar-btn">Change Picture</button>
+                <input type="file" id="avatar-upload" accept="image/*" style="display: none;">
+            </div>
+            <div class="profile-info">
+                <h1 id="profile-name">Loading...</h1>
+                <p id="profile-email">Loading...</p>
+                <p class="join-date" id="join-date">Member since: Loading...</p>
+            </div>
+        </div>
+
+        <div class="profile-content">
+            <section class="profile-section">
+                <h2>Profile Settings</h2>
+                <form id="profile-form" class="profile-form">
+                    <div class="form-group">
+                        <label for="display-name">Display Name</label>
+                        <input type="text" id="display-name" name="display-name" placeholder="Enter your display name">
+                    </div>
+                    <div class="form-group">
+                        <label for="bio">Bio</label>
+                        <textarea id="bio" name="bio" rows="4" placeholder="Tell us about yourself"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="institution">Institution</label>
+                        <input type="text" id="institution" name="institution" placeholder="Enter your institution">
+                    </div>
+                    <div class="form-group">
+                        <label for="research-interests">Research Interests</label>
+                        <input type="text" id="research-interests" name="research-interests" placeholder="Enter your research interests (comma-separated)">
+                    </div>
+                    <button type="submit" class="save-button">Save Changes</button>
+                </form>
+            </section>
+
+            <section class="profile-section">
+                <h2>My Papers</h2>
+                <div id="papers-list" class="papers-list">
+                    <p class="no-papers">No papers uploaded yet.</p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 DivanPapers. All rights reserved.</p>
+    </footer>
+
+    <script src="firebase.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/profile.js"></script>
+</body>
+</html>

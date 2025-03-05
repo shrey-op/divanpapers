@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DivanPapers - Academic Paper Sharing Platform</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/dark-mode.css">
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">DivanPapers</div>
+            <div class="nav-links">
+                <a href="index.html" class="active">Home</a>
+                <a href="search.html">Search</a>
+                <a href="upload.html" class="auth-required">Upload</a>
+                <a href="profile.html" class="auth-required">Profile</a>
+                <button id="auth-button" class="btn-primary">Login</button>
+                <button id="theme-toggle" class="btn-icon">🌙</button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>Welcome to DivanPapers</h1>
+            <p>A modern platform for sharing and discovering academic papers</p>
+            <div class="search-box">
+                <input type="text" placeholder="Search for papers..." id="search-input">
+                <button class="btn-primary">Search</button>
+            </div>
+        </section>
+
+        <section class="trending-papers">
+            <h2>Trending Papers</h2>
+            <div class="paper-grid" id="trending-papers-grid"></div>
+        </section>
+
+        <section class="recent-uploads">
+            <h2>Recently Uploaded</h2>
+            <div class="paper-grid" id="recent-papers-grid"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 DivanPapers. All rights reserved.</p>
+    </footer>
+
+    <script src="firebase.js"></script>
+    <script src="assets/js/app.js"></script>
+</body>
+</html>

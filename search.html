@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Papers - DivanPapers</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/dark-mode.css">
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">DivanPapers</div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="search.html" class="active">Search</a>
+                <a href="upload.html" class="auth-required">Upload</a>
+                <a href="profile.html" class="auth-required">Profile</a>
+                <button id="auth-button" class="btn-primary">Login</button>
+                <button id="theme-toggle" class="btn-icon">🌙</button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="search-section">
+            <h1>Search Papers</h1>
+            <div class="search-filters">
+                <select id="std-filter">
+                    <option value="">Select Standard</option>
+                    <option value="1">1st Standard</option>
+                    <!-- Add more options -->
+                </select>
+                <select id="subject-filter">
+                    <option value="">Select Subject</option>
+                    <option value="math">Mathematics</option>
+                    <!-- Add more options -->
+                </select>
+                <select id="medium-filter">
+                    <option value="">Select Medium</option>
+                    <option value="english">English</option>
+                    <!-- Add more options -->
+                </select>
+                <select id="year-filter">
+                    <option value="">Select Year</option>
+                    <option value="2025">2025</option>
+                    <!-- Add more options -->
+                </select>
+                <input type="text" id="school-filter" placeholder="School Name">
+                <button class="btn-primary" id="search-button">Search</button>
+            </div>
+            <div class="search-results" id="search-results"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 DivanPapers. All rights reserved.</p>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-auth.js"></script>
+    <script src="firebase.js"></script>
+    <script src="assets/js/search.js"></script>
+</body>
+</html>
