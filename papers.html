@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Papers - DivanPapers</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/dark-mode.css">
+    <link rel="stylesheet" href="assets/css/papers.css">
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">DivanPapers</div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="papers.html" class="active">Papers</a>
+                <a href="upload.html" class="auth-required">Upload</a>
+                <a href="profile.html" class="auth-required">Profile</a>
+                <button id="auth-button" class="btn-primary">Login</button>
+                <button id="theme-toggle" class="btn-icon">🌙</button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="papers-container">
+        <div class="search-section">
+            <div class="search-bar">
+                <input type="text" id="search-input" placeholder="Search papers by title, authors, keywords...">
+                <button id="search-button" class="btn-primary">Search</button>
+            </div>
+            
+            <button id="toggle-filters" class="btn-secondary">Show Filters</button>
+            
+            <div id="filters-panel" class="filters-panel" style="display: none;">
+                <h3>Filters</h3>
+                <div class="filters-grid">
+                    <div class="filter-group">
+                        <label for="filter-categories">Categories</label>
+                        <select id="filter-categories" multiple>
+                            <option value="computer-science">Computer Science</option>
+                            <option value="mathematics">Mathematics</option>
+                            <option value="physics">Physics</option>
+                            <option value="biology">Biology</option>
+                            <option value="chemistry">Chemistry</option>
+                            <option value="engineering">Engineering</option>
+                            <option value="social-sciences">Social Sciences</option>
+                            <option value="economics">Economics</option>
+                            <option value="medicine">Medicine</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="filter-language">Language</label>
+                        <select id="filter-language">
+                            <option value="">Any</option>
+                            <option value="en">English</option>
+                            <option value="es">Spanish</option>
+                            <option value="fr">French</option>
+                            <option value="de">German</option>
+                            <option value="zh">Chinese</option>
+                            <option value="ja">Japanese</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="filter-date-from">Date From</label>
+                        <input type="date" id="filter-date-from">
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="filter-date-to">Date To</label>
+                        <input type="date" id="filter-date-to">
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="filter-sort">Sort By</label>
+                        <select id="filter-sort">
+                            <option value="date-desc">Newest First</option>
+                            <option value="date-asc">Oldest First</option>
+                            <option value="title-asc">Title (A-Z)</option>
+                            <option value="title-desc">Title (Z-A)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="filter-actions">
+                    <button id="apply-filters" class="btn-primary">Apply Filters</button>
+                    <button id="reset-filters" class="btn-secondary">Reset</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="papers-grid" class="papers-grid">
+            <!-- Papers will be dynamically loaded here -->
+            <div class="loading-spinner">Loading papers...</div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 DivanPapers. All rights reserved.</p>
+    </footer>
+
+    <script src="firebase.js"></script>
+    <script src="assets/js/papers.js"></script>
+</body>
+</html>
