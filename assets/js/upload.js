@@ -81,39 +81,40 @@ document.addEventListener('DOMContentLoaded', () => {
             // Create a unique filename
             const timestamp = Date.now();
             const paperFileName = `${timestamp}_${paperFile.name}`;
-            const paperPath = `/assets/papers/${paperFileName}`;
+            const githubPath = `${GITHUB_PAPERS_PATH}/${paperFileName}`;
+            const githubUrl = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_REPO}/main/${githubPath}`;
             
-            // Upload file to GitHub repository
+            // Update progress for file reading
+            progressBar.style.width = '50%';
+            progressText.textContent = '50%';
+            
+            // Read and process the file
             const reader = new FileReader();
-            reader.onload = async (e) => {
-                try {
-                    // Store file in GitHub repository
-                    const fileContent = e.target.result;
-                    const githubPath = `${GITHUB_PAPERS_PATH}/${paperFileName}`;
-                    const githubUrl = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_REPO}/main/${githubPath}`;
-                    
-                    // In production, you would upload the file to GitHub through your backend
-                    // For now, we'll just store the path and simulate upload
-                    console.log('File would be uploaded to:', githubUrl);
-                    
-                    // Update progress
-                    progressBar.style.width = '100%';
-                    progressText.textContent = '100%';
-                    
-                    // Store the GitHub URL as the paper path
-                    paperPath = githubUrl;
-                } catch (error) {
-                    console.error('Error handling file:', error);
-                    throw error;
-                }
-            };
-            reader.readAsArrayBuffer(paperFile);
+            await new Promise((resolve, reject) => {
+                reader.onload = () => {
+                    try {
+                        // In production, you would upload the file to GitHub through your backend
+                        console.log('File would be uploaded to:', githubUrl);
+                        resolve();
+                    } catch (error) {
+                        console.error('Error handling file:', error);
+                        reject(error);
+                    }
+                };
+                reader.onerror = () => reject(reader.error);
+                reader.readAsArrayBuffer(paperFile);
+            });
+            
+            // Update progress after file processing
+            progressBar.style.width = '100%';
+            progressText.textContent = '100%';
 
             // Store paper metadata in Firebase
             const paperRef = firebase.database().ref('papers').push();
             await paperRef.set({
                 ...formData,
-                paperPath,
+                paperUrl: githubUrl,  // Store the GitHub URL
+
                 uploadedBy: user.uid,
                 uploadDate: firebase.database.ServerValue.TIMESTAMP
             });
