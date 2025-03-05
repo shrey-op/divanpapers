@@ -81,39 +81,40 @@ document.addEventListener('DOMContentLoaded', () => {
             // Create a unique filename
             const timestamp = Date.now();
             const paperFileName = `${timestamp}_${paperFile.name}`;
-            const githubPath = `${GITHUB_PAPERS_PATH}/${paperFileName}`;
-            const githubUrl = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_REPO}/main/${githubPath}`;
             
-            // Update progress for file reading
-            progressBar.style.width = '50%';
-            progressText.textContent = '50%';
+            // Upload to Firebase Storage
+            const storageRef = firebase.storage().ref();
+            const paperRef = storageRef.child(`papers/${paperFileName}`);
             
-            // Read and process the file
-            const reader = new FileReader();
-            await new Promise((resolve, reject) => {
-                reader.onload = () => {
-                    try {
-                        // In production, you would upload the file to GitHub through your backend
-                        console.log('File would be uploaded to:', githubUrl);
-                        resolve();
-                    } catch (error) {
-                        console.error('Error handling file:', error);
-                        reject(error);
-                    }
-                };
-                reader.onerror = () => reject(reader.error);
-                reader.readAsArrayBuffer(paperFile);
-            });
+            // Upload the file
+            const uploadTask = paperRef.put(paperFile);
             
-            // Update progress after file processing
-            progressBar.style.width = '100%';
-            progressText.textContent = '100%';
+            // Monitor upload progress
+            uploadTask.on('state_changed', 
+                (snapshot) => {
+                    // Update progress bar
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    progressBar.style.width = progress + '%';
+                    progressText.textContent = Math.round(progress) + '%';
+                },
+                (error) => {
+                    // Handle errors
+                    console.error('Upload error:', error);
+                    throw error;
+                }
+            );
+            
+            // Wait for upload to complete
+            await uploadTask;
+            
+            // Get the download URL
+            const downloadURL = await paperRef.getDownloadURL();
 
             // Store paper metadata in Firebase
-            const paperRef = firebase.database().ref('papers').push();
-            await paperRef.set({
+            const dbRef = firebase.database().ref('papers').push();
+            await dbRef.set({
                 ...formData,
-                paperUrl: githubUrl,  // Store the GitHub URL
+                paperUrl: downloadURL,  // Store the Firebase Storage URL
 
                 uploadedBy: user.uid,
                 uploadDate: firebase.database.ServerValue.TIMESTAMP
