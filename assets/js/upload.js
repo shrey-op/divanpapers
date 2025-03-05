@@ -190,20 +190,53 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+// Create or get message container
+function getMessageContainer() {
+    let container = document.getElementById('message-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'message-container';
+        container.style.position = 'fixed';
+        container.style.bottom = '20px';
+        container.style.left = '50%';
+        container.style.transform = 'translateX(-50%)';
+        container.style.zIndex = '1000';
+        container.style.width = '80%';
+        container.style.maxWidth = '500px';
+        container.style.textAlign = 'center';
+        document.body.appendChild(container);
+    }
+    return container;
+}
+
 // Show error message
 function showError(message) {
+    const container = getMessageContainer();
     const errorDiv = document.createElement('div');
     errorDiv.className = 'error-message';
-    errorDiv.textContent = message;
-    document.querySelector('.upload-container').prepend(errorDiv);
+    errorDiv.style.backgroundColor = 'var(--error-bg-color, #ff5252)';
+    errorDiv.style.color = 'white';
+    errorDiv.style.padding = '1rem';
+    errorDiv.style.borderRadius = '8px';
+    errorDiv.style.marginBottom = '10px';
+    errorDiv.style.boxShadow = '0 2px 4px rgba(0,0,0,0.2)';
+    errorDiv.innerHTML = `❌ ${message}`;
+    container.appendChild(errorDiv);
     setTimeout(() => errorDiv.remove(), 5000);
 }
 
 // Show success message
 function showSuccess(message) {
+    const container = getMessageContainer();
     const successDiv = document.createElement('div');
     successDiv.className = 'success-message';
-    successDiv.textContent = message;
-    document.querySelector('.upload-container').prepend(successDiv);
+    successDiv.style.backgroundColor = 'var(--success-bg-color, #4caf50)';
+    successDiv.style.color = 'white';
+    successDiv.style.padding = '1rem';
+    successDiv.style.borderRadius = '8px';
+    successDiv.style.marginBottom = '10px';
+    successDiv.style.boxShadow = '0 2px 4px rgba(0,0,0,0.2)';
+    successDiv.innerHTML = `✅ ${message}`;
+    container.appendChild(successDiv);
     setTimeout(() => successDiv.remove(), 5000);
 }
