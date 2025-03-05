@@ -151,6 +151,94 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Initial load
+    // Load trending papers (most viewed/downloaded)
+    async function loadTrendingPapers() {
+        const trendingGrid = document.getElementById('trending-papers-grid');
+        if (!trendingGrid) return;
+
+        try {
+            const snapshot = await firebase.database().ref('papers')
+                .orderByChild('views')
+                .limitToLast(3)
+                .once('value');
+
+            const papers = [];
+            snapshot.forEach(child => {
+                papers.push({
+                    id: child.key,
+                    ...child.val()
+                });
+            });
+
+            papers.reverse();
+            renderPapersToGrid(papers, trendingGrid);
+        } catch (error) {
+            console.error('Error loading trending papers:', error);
+            if (trendingGrid) {
+                trendingGrid.innerHTML = '<div class="error">Error loading trending papers</div>';
+            }
+        }
+    }
+
+    // Load recent papers
+    async function loadRecentPapers() {
+        const recentGrid = document.getElementById('recent-papers-grid');
+        if (!recentGrid) return;
+
+        try {
+            const snapshot = await firebase.database().ref('papers')
+                .orderByChild('uploadDate')
+                .limitToLast(3)
+                .once('value');
+
+            const papers = [];
+            snapshot.forEach(child => {
+                papers.push({
+                    id: child.key,
+                    ...child.val()
+                });
+            });
+
+            papers.reverse();
+            renderPapersToGrid(papers, recentGrid);
+        } catch (error) {
+            console.error('Error loading recent papers:', error);
+            if (recentGrid) {
+                recentGrid.innerHTML = '<div class="error">Error loading recent papers</div>';
+            }
+        }
+    }
+
+    // Render papers to a grid
+    function renderPapersToGrid(papers, grid) {
+        if (papers.length === 0) {
+            grid.innerHTML = '<div class="no-results">No papers found</div>';
+            return;
+        }
+
+        grid.innerHTML = papers.map(paper => `
+            <div class="paper-card">
+                <h3 class="paper-title">${paper.title}</h3>
+                <div class="paper-authors">${paper.authors.join(', ')}</div>
+                <p class="paper-abstract">${paper.abstract}</p>
+                <div class="paper-metadata">
+                    ${paper.categories.map(cat => `<span class="paper-tag">${cat}</span>`).join('')}
+                    <span class="paper-tag">${paper.language}</span>
+                </div>
+                <div class="paper-stats">
+                    <span>👁 ${paper.views || 0} views</span>
+                    <span>⬇️ ${paper.downloads || 0} downloads</span>
+                </div>
+                <div class="paper-actions">
+                    <a href="${paper.paperUrl}" target="_blank" class="btn-primary">Download PDF</a>
+                    <span class="paper-date">${new Date(paper.uploadDate).toLocaleDateString()}</span>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // Initial loads
     loadPapers();
+    loadTrendingPapers();
+    loadRecentPapers();
 });
