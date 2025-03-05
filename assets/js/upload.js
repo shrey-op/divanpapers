@@ -123,6 +123,11 @@ document.addEventListener('DOMContentLoaded', () => {
             showSuccess('Paper uploaded successfully!');
             uploadForm.reset();
             resetUploadUI();
+            
+            // Redirect to papers page after a short delay
+            setTimeout(() => {
+                window.location.href = 'papers.html';
+            }, 1500); // 1.5 second delay to show success message
 
         } catch (error) {
             console.error('Upload error:', error);
