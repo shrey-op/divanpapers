@@ -66,12 +66,33 @@ function displayResults(papers) {
     searchResults.innerHTML = resultsHtml;
 }
 
+function displayPaper(url) {
+    const paperHtml = `
+        <div class="paper-card">
+            <h3>Paper</h3>
+            <button class="btn-primary" onclick="downloadPaper('${url}')">Download</button>
+        </div>
+    `;
+    searchResults.innerHTML += paperHtml;
+}
+
 function downloadPaper(url) {
     // Implement actual download logic here
     // For now, just log the action
     console.log('Downloading paper:', url);
     alert('Download started!');
 }
+
+// Fetch and display papers from the 'papers' folder in Firebase Storage
+const papersRef = firebase.storage().ref().child('papers');
+papersRef.listAll().then((res) => {
+    res.items.forEach((itemRef) => {
+        itemRef.getDownloadURL().then((url) => {
+            // Display the paper on the papers page
+            displayPaper(url);
+        });
+    });
+});
 
 // Event listeners
 searchButton.addEventListener('click', () => {
